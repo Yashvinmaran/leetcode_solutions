@@ -22,7 +22,6 @@ public:
                 right--;
             }
         }
-
         return water;
     }
 };
