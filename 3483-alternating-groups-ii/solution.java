@@ -12,12 +12,10 @@ class Solution {
             if (right > 0 && temp[right] == temp[right - 1]) {
                 left = right;  
             }
-            
             if (right - left + 1 >= k) {
                 count++;  
             }
         }
-        
         return count;
     }
 }
