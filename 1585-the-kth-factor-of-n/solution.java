@@ -1,16 +1,13 @@
 class Solution {
     public int kthFactor(int n, int k) {
-        for(int i = 1; i < Math.sqrt(n); ++i){ 
-            if(n % i== 0 && --k == 0){ 
-                return i;
+        int fac = -1;
+        for (int i = 1; i<=n && k>0; i++){
+            if(n % i == 0){
+                fac = i;
+                k--;
             }
-        }                       
-        for(int i = (int) Math.sqrt(n); i >= 1; --i){ 
-            if(n % (n/i) == 0 && --k == 0){ 
-                return n/i; 
-            }
-        }         
+        }
+        if(k == 0)return fac;
         return -1;
     }
 }
-
