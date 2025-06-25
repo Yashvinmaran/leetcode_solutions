@@ -11,7 +11,6 @@ class Solution {
         }
         return left;
     }
-
     private long countSmallerOrEqual(int[] nums1, int[] nums2, long target) {
         long count = 0;
         for (int num1 : nums1) {
