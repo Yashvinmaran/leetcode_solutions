@@ -2,7 +2,6 @@ class Solution {
     public int matchPlayersAndTrainers(int[] players, int[] trainers) {
         int n1 = players.length;
         int n2 = trainers.length;
-
         Arrays.sort(players);
         Arrays.sort(trainers);
         int i = 0, j = 0, c = 0;
