@@ -1,17 +1,15 @@
 class Solution {
     public int getDecimalValue(ListNode head) {
-        int num = 0;
         ListNode temp = head;
-        int c = 0;
         int sum = 0;
-        while(temp != null){
-            c++;
+        int pow = 0;
+        while(temp.next != null){
+            pow ++;
             temp = temp.next;
         }
-        c--;
         temp = head;
         while(temp != null){
-            sum += (Math.pow(2,c--)*temp.val);
+            sum += (temp.val * Math.pow(2,pow--));
             temp = temp.next;
         }
         return sum;
