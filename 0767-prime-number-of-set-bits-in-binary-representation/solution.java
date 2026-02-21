@@ -1,28 +1,25 @@
 class Solution {
-    private static boolean isPrimeBitSet(String s){
-        int cnt = 0;
-        for (char c : s.toCharArray()){
-            cnt += (c - '0');
-        }
-        
-        if (cnt <= 1)return false;
-        for (int i = 2; i < cnt; i++){
-            if(cnt % i == 0)return false;
-        }
-
-        return true;
-    }
     public int countPrimeSetBits(int left, int right) {
-        String[] binaries = new String[right - left + 1];
-
-        for (int i = 0; left <= right; i++, left++){
-            binaries[i] = Integer.toBinaryString(left);
+        
+        int count=0;
+        for(int i = left; i<=right;i++)
+        {
+            int n = Integer.bitCount(i);
+            if(isPrime(n))
+            {
+                count++;
+            }
         }
+        return count;
+    }
 
-        int cnt = 0;
-        for (int i = 0; i < binaries.length; i++){
-            if(isPrimeBitSet(binaries[i]))cnt++;
+    public static boolean isPrime(int n)
+    {
+        if(n<2) return false;
+        for(int i = 2;i*i<=n;i++)
+        {
+            if(n%i==0) return false;
         }
-        return cnt;
+        return true;
     }
 }
