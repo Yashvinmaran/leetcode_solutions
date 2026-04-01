@@ -1,30 +1,44 @@
+import java.util.*;
+
 class Solution {
-    private boolean dfs(int i, int[][] graph, int[] state, List<Integer> ans) {
-        if (state[i] == 1) return false;
-        if (state[i] == 2) return true;
-
-        state[i] = 1;
-
-        for (int nei : graph[i]) {
-            if (!dfs(nei, graph, state, ans)) return false;
-        }
-        state[i] = 2;
-        ans.add(i);
-        return true;
-    }
-
     public List<Integer> eventualSafeNodes(int[][] graph) {
         int n = graph.length;
+        List<Integer>[] rev = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            rev[i] = new ArrayList<>();
+        }
 
-        int[] state = new int[n];
-        List<Integer> ans = new ArrayList<>();
+        int[] indegree = new int[n];
 
         for (int i = 0; i < n; i++) {
-            dfs(i, graph, state, ans);
+            for (int v : graph[i]) {
+                rev[v].add(i);
+                indegree[i]++;
+            }
+        }
+
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+
+        for (int i = 0; i < n; i++) {
+            if (indegree[i] == 0) {
+                q.offer(i);
+            }
+        }
+
+        List<Integer> ans = new ArrayList<>();
+
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            ans.add(node);
+
+            for (int prev : rev[node]) {
+                if (--indegree[prev] == 0) {
+                    q.offer(prev);
+                }
+            }
         }
 
         Collections.sort(ans);
         return ans;
     }
 }
-
