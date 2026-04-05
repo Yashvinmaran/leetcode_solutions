@@ -1,22 +1,32 @@
 class Solution {
     public void sortColors(int[] nums) {
-        int low = 0, mid = 0, high = nums.length - 1;
-        
-        while (mid <= high) {
+        int left = 0;
+        int right = nums.length - 1;
+        int mid = 0;
+
+        while (mid <= right) {
             if (nums[mid] == 0) {
-                int temp = nums[mid];
-                nums[mid] = nums[low];
-                nums[low] = temp;
-                low++;
+                // Only XOR if indices are different to avoid resetting to 0
+                if (mid != left) {
+                    nums[mid] ^= nums[left];
+                    nums[left] ^= nums[mid];
+                    nums[mid] ^= nums[left];
+                }
+                left++;
                 mid++;
-            } else if (nums[mid] == 1) {
-                mid++;
+            } else if (nums[mid] == 2) {
+                // Only XOR if indices are different
+                if (mid != right) {
+                    nums[mid] ^= nums[right];
+                    nums[right] ^= nums[mid];
+                    nums[mid] ^= nums[right];
+                }
+                
+                right--; 
             } else {
-                int temp = nums[mid];
-                nums[mid] = nums[high];
-                nums[high] = temp;
-                high--;
+                mid++;
             }
         }
     }
 }
+
