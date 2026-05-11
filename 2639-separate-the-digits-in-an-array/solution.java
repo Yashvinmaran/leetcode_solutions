@@ -1,7 +1,6 @@
 class Solution {
 
     private void add(List<Integer> list, int n){
-        // int 
         while(n != 0){
             list.add(n%10);
             n/=10;
