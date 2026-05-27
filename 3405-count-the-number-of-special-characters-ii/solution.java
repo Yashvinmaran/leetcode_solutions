@@ -1,19 +1,33 @@
 class Solution {
     public int numberOfSpecialChars(String word) {
-        int i = 0, len = word.length();
-        char[] arr = word.toCharArray();
-        int[] indexes = new int[256];
-        Arrays.fill(indexes, -1);
-        int count = 0;
-        for (;i < len;++i) {
-            if (arr[i] >= 97) indexes[arr[i]] = i;
-            else if (indexes[arr[i]] == -1) indexes[arr[i]] = i;
+        int[] lastLowercase = new int[26];
+        int[] firstUppercase = new int[26];
+        
+        Arrays.fill(lastLowercase, -1);
+        Arrays.fill(firstUppercase, -1);
+        
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            if (ch >= 'a' && ch <= 'z') {
+                lastLowercase[ch - 'a'] = i;
+            } else if (ch >= 'A' && ch <= 'Z') {
+                int index = ch - 'A';
+                if (firstUppercase[index] == -1) {
+                    firstUppercase[index] = i;
+                }
+            }
         }
+        
+        int specialCount = 0;
+        
 
-        for (i=65; i <=90; ++i) {
-            if (indexes[i+32] != -1 && indexes[i+32] < indexes[i]) {
-                ++count;}
+        for (int i = 0; i < 26; i++) {
+            if (lastLowercase[i] != -1 && firstUppercase[i] != -1 && lastLowercase[i] < firstUppercase[i]) {
+                specialCount++;
+            }
         }
-        return count;
+        
+        return specialCount;
     }
 }
+
