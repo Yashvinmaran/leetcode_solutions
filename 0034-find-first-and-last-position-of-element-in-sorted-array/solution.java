@@ -1,26 +1,41 @@
 class Solution {
-    public int[] searchRange(int[] nums, int target) {
-        int first = findIndex(nums, target, true);
-        if (first == -1) return new int[]{-1, -1};
-        int last = findIndex(nums, target, false);
-        return new int[]{first, last};
+
+    private int search(int left, int right, int[] nums, int target){
+
+        while(left < right){
+            int mid = left + (right - left)/2;
+
+            if(nums[mid] < target){
+                left = mid + 1;
+            }else right = mid;
+        }
+
+        return left;
     }
 
-    private int findIndex(int[] nums, int target, boolean findFirst) {
-        int left = 0, right = nums.length - 1, index = -1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] == target) {
-                index = mid;
-                if (findFirst) right = mid - 1;
-                else left = mid + 1;
-            } else if (nums[mid] < target) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
+    public int[] searchRange(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        int[] ans = new int[2];
+        ans[0] = -1;
+        ans[1] = -1;
+
+        if(right < 0)return ans;
+
+        int idx = search(left, right, nums, target);
+
+        if(nums[idx] != target)return ans;
+
+
+        while(idx >= 0 && nums[idx] == target){
+            ans[0] = idx--;
         }
-        return index;
+        idx = ans[0];
+        while(idx <= right && nums[idx] == target){
+            ans[1] = idx++;
+        }
+
+        return ans;
     }
 }
-
