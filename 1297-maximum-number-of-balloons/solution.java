@@ -1,19 +1,25 @@
 class Solution {
     public int maxNumberOfBalloons(String text) {
+        int[] freq_arr = new int[26];
+        Set<Character> set = new HashSet<>();
+        set.add('b');
+        set.add('a');
+        set.add('l');
+        set.add('o');
+        set.add('n');
 
-        HashMap<Character, Integer> map = new HashMap<>();
-
-        for (char c : text.toCharArray()) {
-            map.put(c, map.getOrDefault(c, 0) + 1);
+        for (char c : text.toCharArray()){
+            freq_arr[c - 'a']++;
         }
 
-        int b = map.getOrDefault('b', 0);
-        int a = map.getOrDefault('a', 0);
-        int l = map.getOrDefault('l', 0) / 2;
-        int o = map.getOrDefault('o', 0) / 2;
-        int n = map.getOrDefault('n', 0);
+       int max = Math.min(freq_arr['l' - 'a'],freq_arr['o' - 'a']);
+       max /= 2;
+        
 
-        return Math.min(b, Math.min(a, Math.min(l, Math.min(o, n))));
+        for (var c : set){
+            max = Math.min(max, freq_arr[c-'a']);
+        }
+
+        return max;
     }
 }
-
