@@ -1,28 +1,22 @@
-class Solution { 
+class Solution {
+    
+    private static boolean solve(Boolean[] dp, int current){
+        if(current == 0)return false;
 
-    private static boolean solve(int n, Boolean[][] dp, int person, int currentN) { 
-        if (currentN == 0) {
-            return false; 
+        if(dp[current] != null)return dp[current];
+
+        for (int i = 1; i * i <= current; i++){
+            int stone = i*i;
+            if(!solve(dp, current - stone)) return dp[current] = true;
         }
 
-        if (dp[person][currentN] != null) {
-            return dp[person][currentN];
-        }
-        for (int i = 1; i * i <= currentN; i++) {
-            int stonesToRemove = i * i;
-            int nextPerson = (person == 0) ? 1 : 0;
+        return dp[current] = false;
+    }
 
-            if (!solve(n, dp, nextPerson, currentN - stonesToRemove)) {
-                return dp[person][currentN] = true;
-            }
-        }
-        return dp[person][currentN] = false;
-    } 
-
-    public boolean winnerSquareGame(int n) { 
-        Boolean[][] dp = new Boolean[2][n + 1]; 
+    public boolean winnerSquareGame(int n) {
         
-        return solve(n, dp, 0, n); 
-    } 
-}
+        Boolean[] dp = new Boolean[n + 1];
 
+        return solve(dp, n);
+    }
+}
