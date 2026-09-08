@@ -1,42 +1,36 @@
-import java.util.*;
-
 class Solution {
-    public List<Integer> spiralOrder(int[][] matrix) {
+    public List<Integer> spiralOrder(int[][] mat) {
         List<Integer> ans = new ArrayList<>();
-        if (matrix == null || matrix.length == 0) return ans;
+        int m = mat.length;
+        int n = mat[0].length;
+        int top = 0;
+        int down = m - 1;
+        int left = 0;
+        int right = n - 1;
 
-        int m = matrix.length;
-        int n = matrix[0].length;
-
-        int top = 0, bottom = m - 1;
-        int left = 0, right = n - 1;
-
-        while (top <= bottom && left <= right) {
-
-            // left → right (top row)
-            for (int j = left; j <= right; j++) {
-                ans.add(matrix[top][j]);
+        while(top <= down && left <= right){
+            for (int i = left; i <= right; i++){
+                ans.add(mat[top][i]);
             }
             top++;
 
-            // top → bottom (right column)
-            for (int i = top; i <= bottom; i++) {
-                ans.add(matrix[i][right]);
+            for (int i = top; i <= down; i++){
+                ans.add(mat[i][right]);
             }
             right--;
 
-            // right → left (bottom row)
-            if (top <= bottom) {
-                for (int j = right; j >= left; j--) {
-                    ans.add(matrix[bottom][j]);
+            // Guard condition for right-to-left traversal
+            if (top <= down) {
+                for (int i = right; i >= left; i--){
+                    ans.add(mat[down][i]);
                 }
-                bottom--;
+                down--;
             }
 
-            // bottom → top (left column)
+            // Guard condition for bottom-to-top traversal
             if (left <= right) {
-                for (int i = bottom; i >= top; i--) {
-                    ans.add(matrix[i][left]);
+                for (int i = down; i >= top; i--){
+                    ans.add(mat[i][left]);
                 }
                 left++;
             }
