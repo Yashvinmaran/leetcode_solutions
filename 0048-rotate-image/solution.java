@@ -1,20 +1,28 @@
 class Solution {
     public void rotate(int[][] matrix) {
+
         int n = matrix.length;
-        
-        for (int row = 0; row < n; row++) {
-            for (int col = row; col < n; col++) {
-                int temp = matrix[row][col];
-                matrix[row][col] = matrix[col][row];
-                matrix[col][row] = temp;
+
+        // Firstly calculate transporse means swap matrix diagonally
+
+        for (int i = 0; i < n; i++){
+            for (int j = i; j < n; j++){
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
             }
         }
 
-        for (int row = 0; row < n; row++) {
-            for (int col = 0; col < n / 2; col++) {
-                int temp = matrix[row][col];
-                matrix[row][col] = matrix[row][n - col - 1];
-                matrix[row][n - col - 1] = temp;
+        // Then reverse the matrics rows
+        for (int i = 0; i < n; i++){
+            int j = 0;
+            int k = n - 1;
+            while(j < k){
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[i][k];
+                matrix[i][k] = temp;
+                j++;
+                k--;
             }
         }
     }
