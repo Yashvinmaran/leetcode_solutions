@@ -1,32 +1,29 @@
 class Solution {
     public int[] maxSlidingWindow(int[] nums, int k) {
-        Deque<Integer> dq = new LinkedList<>();
-        int[] ans = new int[nums.length - k + 1];
 
-        for (int i = 0; i < k; i++) {
-            while (!dq.isEmpty() && nums[dq.peekLast()] <= nums[i]) {
-                dq.removeLast();
+        int[] ans = new int[nums.length - k + 1];
+        Deque<Integer> qu = new LinkedList<>();
+
+        for (int i = 0; i < k; i++){
+            while(!qu.isEmpty() && nums[qu.peekLast()] < nums[i]){
+                qu.pollLast();
             }
-            dq.addLast(i);
+            qu.addLast(i);
         }
 
-        ans[0] = nums[dq.peekFirst()];
+        ans[0] = nums[qu.peekFirst()];
 
-        for (int i = k; i < nums.length; i++) {
-
-            if (!dq.isEmpty() && dq.peekFirst() <= i - k) {
-                dq.removeFirst();
+        for (int i = k; i < nums.length; i++){
+            while(!qu.isEmpty() && nums[qu.peekLast()] <= nums[i]){
+                qu.pollLast();
             }
-            
-            while (!dq.isEmpty() && nums[dq.peekLast()] <= nums[i]) {
-                dq.removeLast();
+            qu.addLast(i);
+            while(qu.peekFirst() <= (i - k)){
+                qu.pollFirst();
             }
-            dq.addLast(i);
-            
-            ans[i - k + 1] = nums[dq.peekFirst()];
+            ans[i-k+1] = nums[qu.peekFirst()];
         }
 
         return ans;
     }
 }
-
