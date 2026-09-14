@@ -1,31 +1,34 @@
 class Solution {
+
+    private static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    private static void findPermute(int[] arr, int idx, int n, List<List<Integer>> result) {
+        if (idx == n) {
+            List<Integer> currentList = new ArrayList<>();
+            for (int num : arr) {
+                currentList.add(num);
+            }
+            result.add(currentList);
+            return;
+
+        }
+
+        for (int i = idx; i <= n; i++) {
+            swap(arr, i, idx);
+            findPermute(arr, idx + 1, n, result);
+            swap(arr, i, idx);
+        }
+    }
+
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
-        int n = nums.length;
-        findPermutation(nums, result, 0, n-1);
+
+        findPermute(nums, 0, nums.length - 1, result);
+
         return result;
-    }
-
-    public void findPermutation(int[] nums, List<List<Integer>> result, int idx, int n){
-        if(idx == n){
-            List<Integer> current = new ArrayList<>();
-            for (int num : nums){
-                current.add(num);
-            }
-            result.add(current);
-            return;
-        }
-
-        for (int i = idx; i<=n; i++){
-            swap(nums, i, idx);
-            findPermutation(nums, result, idx+1, n);
-            swap(nums, i, idx);
-        }
-    }
-
-    public void swap(int[] nums, int i, int j){
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
     }
 }
