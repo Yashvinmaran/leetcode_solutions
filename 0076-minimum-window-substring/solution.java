@@ -1,36 +1,53 @@
-class Solution {
-    public String minWindow(String s, String t) {
-        if (s.length() < t.length()) return "";
-
-        int[] target = new int[128];
-        for (char c : t.toCharArray()) {
-            target[c]++;
+class Solution { 
+    public String minWindow(String s, String t) { 
+        if (s == null || t == null || s.length() < t.length()) {
+            return "";
         }
 
-        int i = 0, j = 0, minLen = Integer.MAX_VALUE, start = 0;
-        int count = t.length();
-
-        while (j < s.length()) {
-            if (target[s.charAt(j)] > 0) {
-                count--;
+        int[] map = new int[128]; 
+        int cnt = 0; 
+        
+        for (int i = 0; i < t.length(); i++) { 
+            char c = t.charAt(i);
+            if (map[c] == 0) {
+                cnt++; 
             }
-            target[s.charAt(j)]--;
-            j++;
+            map[c]++; 
+        } 
+        
+        int minLen = Integer.MAX_VALUE; 
+        int left = 0; 
+        int startIdx = 0; 
+        boolean found = false;
 
-            while (count == 0) {
-                if (j - i < minLen) {
-                    minLen = j - i;
-                    start = i;
-                }
-                target[s.charAt(i)]++;
-                if (target[s.charAt(i)] > 0) {
-                    count++;
-                }
-                i++;
-            }
-        }
-
-        return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
-    }
+        for (int right = 0; right < s.length(); right++) { 
+            char rChar = s.charAt(right);
+            
+            map[rChar]--; 
+            
+            if (map[rChar] == 0) { 
+                cnt--; 
+            } 
+            
+            while (cnt == 0) { 
+                found = true;
+                int currLen = (right - left + 1); 
+                if (minLen > currLen) { 
+                    minLen = currLen; 
+                    startIdx = left;
+                } 
+                
+                char lChar = s.charAt(left);
+                map[lChar]++; 
+                
+                if (map[lChar] > 0) { 
+                    cnt++; 
+                } 
+                left++; 
+            } 
+        } 
+        
+        return found ? s.substring(startIdx, startIdx + minLen) : ""; 
+    } 
 }
 
