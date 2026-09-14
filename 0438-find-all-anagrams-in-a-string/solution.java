@@ -1,24 +1,27 @@
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
-        List<Integer> list = new ArrayList<>();
-        int n = s.length();
-        int m = p.length();
-        for (int i = 0; i <= (n-m); i++){
-            if(isValid(s.substring(i, (i + m)), p))list.add(i);
+
+        List<Integer> ans = new ArrayList<>();
+
+        int[] freq1 = new int[26];
+        int[] freq2 = new int[26];
+
+        for(char c : p.toCharArray()){
+            freq1[c - 'a']++;
         }
-        return list;
-    }
-    private boolean isValid(String str, String p){
-        int[] arr = new int[26];
-        for(int i = 0; i<str.length(); i++){
-            arr[str.charAt(i)-'a']++;
+
+        int left = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            freq2[s.charAt(right) - 'a']++;
+            while(freq1[s.charAt(right) - 'a'] < freq2[s.charAt(right) - 'a']){
+                freq2[s.charAt(left) - 'a']--;
+                left++;
+            }
+
+            if((right - left + 1) == p.length())ans.add(left);
         }
-        for(int i = 0; i<p.length(); i++){
-            arr[p.charAt(i)-'a']--;
-        }
-        for (int i : arr){
-            if(i != 0)return false;
-        }
-        return true;
+
+        return ans;
     }
 }
