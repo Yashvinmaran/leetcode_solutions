@@ -1,36 +1,40 @@
 class Solution {
-    public boolean checkInclusion(String p, String s) {
-        int m = p.length(), n = s.length();
-        if (m > n) return false;
 
-        int[] countP = new int[26];
-        int[] countWindow = new int[26];
+    private static boolean compare(String s1, String s2, int[] freq){
 
-        for (char c : p.toCharArray()) {
-            countP[c - 'a']++;
+        int[] freq2 = new int[26];
+
+        for (char s : s2.toCharArray()){
+            freq2[s-'a']++;
         }
 
-        for (int i = 0; i < m; i++) {
-            countWindow[s.charAt(i) - 'a']++;
+        for (int i = 0; i < 26; i++){
+            if(freq[i] != freq2[i])return false;
         }
 
-        if (matches(countP, countWindow)) return true;
+        return true;
+    }
 
-        for (int i = m; i < n; i++) {
-            countWindow[s.charAt(i) - 'a']++;             
-            countWindow[s.charAt(i - m) - 'a']--;         
+    public boolean checkInclusion(String s1, String s2) {
+    
+        int[] freq1 = new int[26];
+        int[] freq2 = new int[26];
 
-            if (matches(countP, countWindow)) return true;
+        for (char s : s1.toCharArray()){
+            freq1[s-'a']++;
+        }
+
+        int left = 0;
+
+        for (int right = 0; right < s2.length(); right++){
+            freq2[s2.charAt(right) - 'a']++;
+            while(freq1[s2.charAt(right) - 'a'] < freq2[s2.charAt(right) - 'a']){
+                freq2[s2.charAt(left) - 'a']--;
+                left++;
+            }
+            if((right - left + 1) == s1.length())return true;
         }
 
         return false;
     }
-
-    private boolean matches(int[] a, int[] b) {
-        for (int i = 0; i < 26; i++) {
-            if (a[i] != b[i]) return false;
-        }
-        return true;
-    }
 }
-
