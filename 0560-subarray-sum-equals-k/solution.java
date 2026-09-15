@@ -5,7 +5,6 @@ class Solution {
 
         HashMap<Integer, Integer> map = new HashMap<>();
 
-        
         int curr = 0;
         for (int i = 0; i < nums.length; i++){
             curr += nums[i];
