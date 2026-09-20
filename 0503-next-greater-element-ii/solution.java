@@ -3,19 +3,20 @@ class Solution {
 
         int n= nums.length;
 
-        int[] ans = new int[nums.length];
-        Stack<Integer> st = new Stack<>();
+        int[] ans = new int[n];
+        int[] stack = new int[n];
+        int top = -1;
 
 
         for (int i = 2 * n - 1; i >= 0; i--){
-            while(!st.isEmpty() && nums[st.peek()] <= nums[i%n]){
-                st.pop();
+            while(top != -1 && nums[stack[top]] <= nums[i%n]){
+                top--;
             }
 
-            if(st.isEmpty())ans[i%n] = -1;
-            else ans[i%n] = nums[st.peek()];
+            if(top == -1)ans[i%n] = -1;
+            else ans[i%n] = nums[stack[top]];
 
-            st.push(i%n);
+            stack[++top] = (i%n);
         }
 
         return ans;
