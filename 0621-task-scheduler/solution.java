@@ -1,19 +1,23 @@
 class Solution {
     public int leastInterval(char[] tasks, int n) {
         int[] freq = new int[26];
-        for (char c : tasks) freq[c - 'A']++;
 
-        int maxFreq = 0;
-        for (int f : freq) maxFreq = Math.max(maxFreq, f);
+        for (char c : tasks)
+            freq[c - 'A']++;
 
-        int maxCount = 0;
-        for (int f : freq)
-            if (f == maxFreq) maxCount++;
+        Arrays.sort(freq);
+        int maxFreq = freq[25];
+        int gap = maxFreq - 1;
+        int idolSlots = gap * n;
 
-        int partCount = maxFreq - 1;
-        int partLength = n + 1;
-        int minTime = partCount * partLength + maxCount;
+        for (int i = 24; i >= 0; i--) {
+            idolSlots -= Math.min(freq[i], gap);
+        }
 
-        return Math.max(minTime, tasks.length);
+        if (idolSlots > 0) {
+            return (tasks.length + idolSlots);
+        }
+
+        return tasks.length;
     }
 }
