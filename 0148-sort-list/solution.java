@@ -1,34 +1,36 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
-    public ListNode sortList(ListNode head) {
-        if(head == null || head.next == null) 
-            return head;
+
+    private static ListNode merge(ListNode left, ListNode right){
+        ListNode dummy = new ListNode();
+        ListNode tail = dummy;
         
-        ListNode left = head;
-        ListNode mid = findMid(left);
-        ListNode right = mid.next;
-        mid.next = null;
+        while(left != null && right != null){
+            if(left.val <= right.val){
+                tail.next = left; 
+                left = left.next;
+            } else {
+                tail.next = right;
+                right = right.next;
+            }
+            tail = tail.next;
+        }
 
-        left = sortList(left);
-        right = sortList(right);
+        if(left != null){
+            tail.next = left;
+        }
+        if(right != null){
+            tail.next = right;
+        }
 
-        return merge(left, right);
+        return dummy.next;
     }
 
-    private ListNode findMid(ListNode node) {
-        ListNode slow = node;
-        ListNode fast = node.next;
+    private static ListNode findMid(ListNode head){
+        ListNode slow = head;
+        ListNode fast = head.next;
 
-        while(fast != null && fast.next!=null) {
+
+        while(fast != null && fast.next != null){
             slow = slow.next;
             fast = fast.next.next;
         }
@@ -36,31 +38,21 @@ class Solution {
         return slow;
     }
 
-    private ListNode merge(ListNode left, ListNode right) {
-        ListNode node = new ListNode();
-        ListNode merged = node;
-        while(left != null && right != null) {
-            if(left.val < right.val) {
-                node.next = left;
-                left = left.next;
-            } else {
-                node.next = right;
-                right = right.next;
-            }
-            node = node.next;
-        }
+    public ListNode sortList(ListNode head) {
+        // Fixed: Re-enabled base case to prevent StackOverflowError
+        if(head == null || head.next == null) return head;
 
-        if(left!=null) {
-            node.next = left;
-            node = node.next;
-        }
+        ListNode left = head;
+        ListNode mid = findMid(left);
+        ListNode right = mid.next;
 
-        if(right!=null) {
-            node.next = right;
-            node = node.next;
-        }
+        mid.next = null; // Break the list into two halves
 
-        return merged.next;
+        // Fixed: Capture the returned heads of the sorted sublists
+        left = sortList(left);
+        right = sortList(right);
+
+        return merge(left, right);
     }
 }
 
