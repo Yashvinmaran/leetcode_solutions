@@ -1,20 +1,15 @@
 class Solution {
-    private Integer prev = null;
-    private boolean helper(TreeNode root) {
-        if (root == null) return true;
+    
+    private static boolean helper(TreeNode root, TreeNode max, TreeNode min){
+        if(root == null) return true;
 
-        if (!helper(root.left)) return false;
+        if(max != null && max.val <= root.val)return false;
+        if(min != null && min.val >= root.val)return false;
 
-        if (prev != null && root.val <= prev) return false;
-        prev = root.val;
-
-        if (!helper(root.right)) return false;
-
-        return true;
+        return helper(root.left, root, min) && helper(root.right, max, root);
     }
 
     public boolean isValidBST(TreeNode root) {
-        return helper(root);
+        return helper(root, null, null);
     }
 }
-
