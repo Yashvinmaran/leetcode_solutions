@@ -27,35 +27,29 @@
 //     }
 // }
 
-
-
-
-
-
-
 class Solution {
 
-    int left  = 0;
-    int right = 0;
-
-    private int dfs(TreeNode root){
+    private static int dfs(TreeNode root){
         if(root == null)return 0;
 
-        
         int left = dfs(root.left);
-        if(left == -1)return -1;
+        if(left == -1) return -1;
+
         int right = dfs(root.right);
+        if(right == -1) return -1;
 
-        if(right == -1)return -1;
-
-        if(Math.abs(right - left) > 1)return -1;
+        if(Math.abs(right - left) > 1) return -1;
 
         return Math.max(left, right) + 1;
     }
+    
 
     public boolean isBalanced(TreeNode root) {
+
         if(root == null) return true;
 
-        return dfs(root) != -1;
+        if(dfs(root) == -1)return false;
+
+        return true;
     }
 }
