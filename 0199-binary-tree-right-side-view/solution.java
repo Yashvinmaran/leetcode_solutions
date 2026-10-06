@@ -1,23 +1,52 @@
+// class Solution {
+//     public List<Integer> rightSideView(TreeNode root) {
+//         if(root == null) return new ArrayList<>();
+
+//         List<Integer> ans = new ArrayList<>();
+
+//         Queue<TreeNode> qu = new ArrayDeque<>();
+
+//         qu.offer(root);
+
+//         while(!qu.isEmpty()){
+//             int size = qu.size();
+//             int val = 0;
+//             for(int i = 0; i < size; i++){
+//                 TreeNode node = qu.poll();
+//                 val = node.val;
+//                 if(node.left != null) qu.offer(node.left);
+//                 if(node.right != null) qu.offer(node.right);
+//             }
+
+//             ans.add(val);
+//         }
+
+//         return ans;
+//     }
+// }
+
 class Solution {
 
-    private static void findRightView(TreeNode root, int level, List<Integer> list){
-        if(root == null)return;
+    private static void dfs(TreeNode root, int level, List<Integer> ans){
+        if(root == null) return;
 
-        if(list.size() == level){
-            list.add(root.val);
+        if(level == ans.size()){
+            ans.add(root.val);
         }
-        list.set(level, root.val);
-        findRightView(root.left, level + 1, list);
-        findRightView(root.right, level + 1, list);
+
+        ans.set(level, root.val);
+
+        dfs(root.left, level + 1, ans);
+        dfs(root.right, level + 1, ans);
     }
 
     public List<Integer> rightSideView(TreeNode root) {
-        List<Integer> list = new ArrayList<>();
+        if(root == null) return new ArrayList<>();
+         
+        List<Integer> ans = new ArrayList<>();
 
-        if(root == null)return list;
+        dfs(root, 0, ans);
 
-        findRightView(root, 0, list);
-
-        return list;
+        return ans;
     }
 }
