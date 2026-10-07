@@ -1,18 +1,32 @@
 class Solution {
-    private TreeNode helper(int[] inorder, int inlo, int inhi,int[] postorder, int postlo, int posthi) {
-        if (inlo > inhi || postlo > posthi) return null;
-        TreeNode root = new TreeNode(postorder[posthi]);
-        int rootIndex = inlo;
-        while (rootIndex <= inhi && inorder[rootIndex] != root.val)rootIndex++;
-        int leftSize = rootIndex - inlo;
-        root.left = helper(inorder, inlo, rootIndex - 1, postorder, postlo, postlo + leftSize - 1);
-        root.right = helper(inorder, rootIndex + 1, inhi,postorder, postlo + leftSize, posthi - 1);
+    private int postIdx;
+
+    private TreeNode solve(int[] in, int[] post, int start, int end, Map<Integer, Integer> map) {
+        if (start > end) return null;
+
+        int rt = post[postIdx];
+        TreeNode root = new TreeNode(rt);
+        
+        postIdx--;
+
+        int pos = map.get(rt);
+
+        root.right = solve(in, post, pos + 1, end, map);
+        root.left = solve(in, post, start, pos - 1, map);
+
         return root;
     }
 
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
-        int n = inorder.length;
-        return helper(inorder, 0, n - 1, postorder, 0, n - 1);
+    public TreeNode buildTree(int[] in, int[] post) {
+        int n = in.length;
+        postIdx = n - 1; 
+        
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(in[i], i);
+        }
+
+        return solve(in, post, 0, n - 1, map);
     }
 }
 
