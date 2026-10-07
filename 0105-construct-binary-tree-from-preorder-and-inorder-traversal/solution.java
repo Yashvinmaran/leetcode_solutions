@@ -1,23 +1,32 @@
 class Solution {
-    private TreeNode helper(int[] preorder, int prelo, int prehi, int[] inorder, int inlo, int inhi){
-        if(prelo > prehi) return null;
 
-        TreeNode root = new TreeNode(preorder[prelo]);
+    private int preIdx = 0; 
 
-        int i = inlo;
-        while(inorder[i] != preorder[prelo]) i++;
+    private int findIndex(int[] in, int element, int n) {
+        for (int i = 0; i < n; i++) {
+            if (element == in[i]) return i;
+        }
+        return -1;
+    }
 
-        int leftSize = i - inlo;
+    private TreeNode solve(int[] pre, int[] in, int preStartIndex, int preEndIndex, int n) {
+        if (preIdx >= n || preStartIndex > preEndIndex) return null;
 
-        root.left = helper(preorder, prelo + 1, prelo + leftSize, inorder, inlo, i - 1);
-        root.right = helper(preorder, prelo + leftSize + 1, prehi, inorder, i + 1, inhi);
+        int element = pre[preIdx++];
+        int inorderIndex = findIndex(in, element, n);
+
+        TreeNode root = new TreeNode(element);
+
+        root.left = solve(pre, in, preStartIndex, inorderIndex - 1, n);
+        root.right = solve(pre, in, inorderIndex + 1, preEndIndex, n);
 
         return root;
     }
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         int n = preorder.length;
-        return helper(preorder, 0, n - 1, inorder, 0, n - 1);
+        preIdx = 0;
+        return solve(preorder, inorder, 0, n - 1, n);
     }
 }
 
