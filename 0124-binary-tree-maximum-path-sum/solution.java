@@ -8,19 +8,19 @@ class Solution {
         int left = solve(root.left);
         int right = solve(root.right);
 
-        int maxBottom = (left + right + root.val);
+        int bottomMax = root.val + left + right;
 
-        int maxLeftOrRight = (Math.max(left, right) + root.val);
+        int leftOrRightMax = Math.max(left, right) + root.val;
 
-        int onlyRoot = root.val;
+        int rootMax = root.val;
 
-        maxSum = Math.max(maxSum, Math.max(maxLeftOrRight, Math.max(maxBottom, onlyRoot)));
+        maxSum = Math.max(Math.max(Math.max(rootMax, maxSum), leftOrRightMax), bottomMax);
 
-        return Math.max(onlyRoot, maxLeftOrRight);
-
+        return Math.max(leftOrRightMax, rootMax);
     }
 
     public int maxPathSum(TreeNode root) {
+
         maxSum = Integer.MIN_VALUE;
 
         solve(root);
