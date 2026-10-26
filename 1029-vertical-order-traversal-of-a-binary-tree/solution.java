@@ -1,32 +1,35 @@
 class Solution {
-    TreeMap<Integer, TreeMap<Integer, List<Integer>>> map = new TreeMap<>(); 
-
-    private void dfs(TreeNode root, int row, int col) {
-        if (root == null) return;
-        
-        map.computeIfAbsent(col, k -> new TreeMap<>())
-           .computeIfAbsent(row, k -> new ArrayList<>())
-           .add(root.val);
-        
-        dfs(root.left, row + 1, col - 1);
-        dfs(root.right, row + 1, col + 1);
-    }
-
-    public List<List<Integer>> verticalTraversal(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        dfs(root, 0, 0);
-        
-        for (int col : map.keySet()) {
-            List<Integer> colList = new ArrayList<>();
-            for (int row : map.get(col).keySet()) {
-                List<Integer> nodes = map.get(col).get(row);
-                Collections.sort(nodes);
-                colList.addAll(nodes);
-            }
-            result.add(colList);
+    public void solve(TreeNode root,Map<Integer,ArrayList<int[]>>map,int idx,int r){
+        if(map.containsKey(idx))map.get(idx).add(new int[]{r,root.val});
+        else{
+            map.put(idx,new ArrayList<>());
+            map.get(idx).add(new int[]{r,root.val});
         }
-        
-        return result;
+        if(root.left!=null)solve(root.left,map,idx-1,r+1);
+        if(root.right!=null)solve(root.right,map,idx+1,r+1);
+        return;
+    }
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        TreeMap<Integer,ArrayList<int[]>>map=new TreeMap<>();
+        List<List<Integer>>list=new ArrayList<>();
+        solve(root,map,0,0);
+
+        for (List<int[]> values : map.values()) {
+            values.sort((a, b) -> {
+                if (a[0] != b[0]) {
+                    return Integer.compare(a[0], b[0]);
+                }
+                return Integer.compare(a[1], b[1]);
+            });
+
+            List<Integer> temp = new ArrayList<>();
+
+            for (int[] node : values) {
+                temp.add(node[1]);
+            }
+
+            list.add(temp);
+        }
+        return list;
     }
 }
-
