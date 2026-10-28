@@ -13,7 +13,7 @@ class Solution {
         List<String> result = new ArrayList<>();
         if (digits == null || digits.length() == 0) return result;
 
-        result.add(""); // starting point
+        result.add("");
 
         for (int i = 0; i < digits.length(); i++) {
             char digit = digits.charAt(i);
@@ -31,4 +31,3 @@ class Solution {
         return result;
     }
 }
-
